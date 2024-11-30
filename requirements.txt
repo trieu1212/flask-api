@@ -1,7 +1,6 @@
 Flask==3.0.3
 numpy
 pymongo
-deepface
 pyjwt
 bcrypt
 python-dotenv
