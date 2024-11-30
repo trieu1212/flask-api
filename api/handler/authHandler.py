@@ -11,6 +11,7 @@ EMBEDDINGS_PATH = Config.EMBEDDINGS_DIR
 THRESHOLD = float(Config.THRESHOLD)
 
 def login():
+    print("Mongo URI:", os.getenv("MONGO_URI"))
     data = request.json
     email = data.get('email')
     password = data.get('password')
