@@ -1,6 +1,6 @@
 from flask import Blueprint
 from api.handler.userHandler import create_user, get_current_user
-from api.handler.authHandler import verify_face_login_biometrics, register_face, login, register_face_v2, verify_face
+from api.handler.authHandler import login, register_face_v2, verify_face
 from api.middleware import jwt_middleware
 
 auth_bp = Blueprint('auth_bp', __name__)

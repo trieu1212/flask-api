@@ -1,6 +1,5 @@
 from api.entity.userEntity import UserEntity
 
-
 def create_user(user_data):
     new_user = UserEntity(
         firstName =user_data["firstName"],
