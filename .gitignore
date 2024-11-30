@@ -3,6 +3,10 @@
 *.pyc
 __pycache__
 
+
+*.jpg
+*.png   
+*.pkl
 # Environments 
 .env 
 .venv 
