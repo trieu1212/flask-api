@@ -1,4 +1,7 @@
-Flask==3.0.3
+flask
+flask_cors
+pymongo
+bson
 numpy
 pymongo
 pyjwt
