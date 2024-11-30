@@ -4,7 +4,7 @@ import numpy as np
 from utils.jwt import gen_jwt_token
 from utils.hashPassword import check_password
 from flask import jsonify, request
-from config import Config
+from api.config import Config
 from api.service import userService
 # from model.face_recognize import train_embeddings
 from api.service.authService import login_face_biometric
