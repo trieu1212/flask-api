@@ -3,7 +3,7 @@ from flask_cors import CORS
 from api.routes import user_bp, auth_bp
 
 app = Flask(__name__) 
-CORS(app)
+CORS(app, origins=["https://flask-api-weld-ten.vercel.app", "http://localhost:5000"])
 app.register_blueprint(user_bp, prefix='/api/user')
 app.register_blueprint(auth_bp, prefix='/api/auth')
 
