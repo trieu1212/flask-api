@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
-from api.routes import user_bp, auth_bp
+from api.routes import user_bp, auth_bp, product_bp, cart_bp, order_bp
 from pymongo import MongoClient
 from api.config import Config
 
@@ -18,6 +18,9 @@ except Exception as e:
 
 app.register_blueprint(user_bp, prefix='/api/user')
 app.register_blueprint(auth_bp, prefix='/api/auth')
+app.register_blueprint(product_bp, prefix='/api/product')
+app.register_blueprint(cart_bp, prefix='/api/cart')
+app.register_blueprint(order_bp, prefix='/api/order')
 
 @app.route('/test', methods=['GET'])
 def test():

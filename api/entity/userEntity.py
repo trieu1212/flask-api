@@ -2,7 +2,6 @@ from bson.objectid import ObjectId
 from flask import current_app
 from api.config import Config
 
-
 class UserEntity:
     def __init__(self, firstName, lastName, phone ,password, email, label = None, _id=None):
         self._id = _id or ObjectId()
