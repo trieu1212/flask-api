@@ -7,5 +7,3 @@ pyjwt
 bcrypt
 python-dotenv
 Pillow
-mtcnn
-opencv-python-headless
