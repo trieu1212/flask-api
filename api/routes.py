@@ -1,6 +1,6 @@
 from flask import Blueprint
 from api.handler.userHandler import create_user, get_current_user
-from api.handler.authHandler import login, register_face_v2, verify_face
+from api.handler.authHandler import login, register_face_v2, verify_face, get_ip
 from api.middleware import jwt_middleware
 
 auth_bp = Blueprint('auth_bp', __name__)
@@ -11,3 +11,4 @@ user_bp.route('/get-current-user', methods=['GET'])(jwt_middleware(get_current_u
 auth_bp.route('/login', methods=['POST'])(login)
 auth_bp.route('/verify-face', methods=['POST'])(jwt_middleware(verify_face))
 auth_bp.route('/register-face-v2', methods=['POST'])(jwt_middleware(register_face_v2))
+auth_bp.route('/get-ip', methods=['GET'])(get_ip)

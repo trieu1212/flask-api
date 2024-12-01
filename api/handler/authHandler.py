@@ -89,3 +89,8 @@ def verify_face():
         
     except Exception as e:
         return jsonify({'error': str(e)}), 400
+    
+def get_ip():
+    client_ip = request.remote_addr
+    print(f"Client IP: {client_ip}")
+    return f"Your IP is: {client_ip}"
