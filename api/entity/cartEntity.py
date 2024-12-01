@@ -60,14 +60,16 @@ class CartEntity:
             else:
                 products.append({"product_id": product_id, "quantity": quantity})
                 cart["total"] += quantity * price
-            cart["_id"] = str(cart["_id"])
-            carts_collection.update_one({"_id": cart["_id"]}, {"$set": {"products": products, "total": cart["total"]}})
 
+            carts_collection.update_one({"user_id": user_id}, {"$set": {"products": products, "total": cart["total"]}})
+
+            updated_cart = carts_collection.find_one({"user_id": user_id})
+            
             return CartEntity(
-                user_id=cart["user_id"],
-                products=products,
-                total=cart["total"],
-                _id=cart["_id"]
+                user_id=updated_cart["user_id"],
+                products=updated_cart["products"],
+                total=updated_cart["total"],
+                _id=updated_cart["_id"]
             )
         else:
             cart = CartEntity(
