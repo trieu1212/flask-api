@@ -7,7 +7,7 @@ from flask import jsonify, request
 from api.config import Config
 from api.service import userService
 from model.utils import cosine_distance
-from embeddings.firestore import save_embeddings, get_embeddings, get_all_embeddings 
+from api.service.embeddingService import save_embeddings, get_embeddings, get_all_embeddings
 EMBEDDINGS_PATH = Config.EMBEDDINGS_DIR
 THRESHOLD = float(Config.THRESHOLD)
 
