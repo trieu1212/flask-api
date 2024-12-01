@@ -1,9 +1,7 @@
 from bson.objectid import ObjectId
-from pymongo import MongoClient
+from flask import current_app
 from api.config import Config
 
-
-users_collection = MongoClient(Config.MONGO_URI)[Config.MONGO_DB_NAME]["users"]
 
 class UserEntity:
     def __init__(self, firstName, lastName, phone ,password, email, label = None, _id=None):
@@ -27,6 +25,9 @@ class UserEntity:
         }
     
     def save(self, update=False):
+        db = current_app.config['MONGO_URI'][Config.MONGO_DB_NAME]
+        users_collection = db["users"]
+
         data = self.to_dictionary()
         data.pop('_id', None)  
 
@@ -38,6 +39,9 @@ class UserEntity:
     
     @staticmethod
     def find_by_label(label):
+        db = current_app.config['MONGO_URI'][Config.MONGO_DB_NAME]
+        users_collection = db["users"]
+
         user = users_collection.find_one({"label": label})
         if user:
             return UserEntity(user["firstName"], user["lastName"], user["phone"], user["password"], user["email"], user["label"], user["_id"])
@@ -45,6 +49,9 @@ class UserEntity:
     
     @staticmethod
     def find_by_id(id):
+        db = current_app.config['MONGO_URI'][Config.MONGO_DB_NAME]
+        users_collection = db["users"]
+
         user = users_collection.find_one({"_id": ObjectId(id)})
         if user:
             return UserEntity(user["firstName"], user["lastName"], user["phone"], user["password"], user["email"], user["label"], user["_id"])
@@ -52,6 +59,9 @@ class UserEntity:
     
     @staticmethod
     def find_by_email(email):
+        db = current_app.config['MONGO_URI'][Config.MONGO_DB_NAME]
+        users_collection = db["users"]
+
         user = users_collection.find_one({"email": email})
         if not user:
             return None
@@ -67,10 +77,16 @@ class UserEntity:
     
     @staticmethod
     def update_password(id, password):
+        db = current_app.config['MONGO_URI'][Config.MONGO_DB_NAME]
+        users_collection = db["users"]
+
         users_collection.update_one({"_id": ObjectId(id)}, {"$set": {"password": password}})
 
     @staticmethod
     def delete(id):
+        db = current_app.config['MONGO_URI'][Config.MONGO_DB_NAME]
+        users_collection = db["users"]
+        
         users_collection.delete_one({"_id": ObjectId(id)})
 
     
