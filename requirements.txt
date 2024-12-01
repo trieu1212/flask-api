@@ -9,3 +9,4 @@ python-dotenv
 Pillow
 mtcnn
 opencv-python-headless
+firebase-admin

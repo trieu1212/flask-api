@@ -7,6 +7,7 @@ from flask import jsonify, request
 from api.config import Config
 from api.service import userService
 from model.utils import cosine_distance
+from embeddings.firestore import save_embeddings, get_embeddings, get_all_embeddings 
 EMBEDDINGS_PATH = Config.EMBEDDINGS_DIR
 THRESHOLD = float(Config.THRESHOLD)
 
@@ -49,10 +50,7 @@ def register_face_v2():
         
         userService.update_label_user(f"{user_id}_{user_email}", user_id)
 
-        file_path = os.path.join(EMBEDDINGS_PATH, f"{user_id}_{user_email}.pkl")
-
-        with open(file_path, 'wb') as f:
-            pickle.dump(embeddings_values, f)  
+        save_embeddings(user_id, user_email, embeddings_values)
 
         return jsonify({'message': 'Embeddings saved successfully'}), 200
     except Exception as e:
@@ -65,10 +63,8 @@ def verify_face():
         user_email = data['userEmail']
         embeddings = data['embeddings']
 
-        file_name = f"{user_id}_{user_email}.pkl"
-        file_path = os.path.join(EMBEDDINGS_PATH, file_name)
-        with open(file_path, 'rb') as f:
-            saved_embeddings = pickle.load(f)
+        doc = get_embeddings(user_id)
+        saved_embeddings = doc['embeddings'] if doc else []
 
         similarities = [cosine_distance(embeddings, embedding) for embedding in saved_embeddings]
         avg_similarity = (sum(similarities) / len(similarities)) if similarities else 0
