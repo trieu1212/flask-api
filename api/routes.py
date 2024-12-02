@@ -1,5 +1,5 @@
 from flask import Blueprint
-from api.user import create_user, get_current_user
+from api.user import create_user_handler, get_current_user
 from api.auth import login, register_face_v2, verify_face, get_ip
 from api.product import get_all_products_handler, get_product_by_id_handler, add_new_product
 from api.cart import add_product_to_cart_handler, get_current_user_cart
@@ -12,7 +12,7 @@ product_bp = Blueprint('product_bp', __name__)
 cart_bp = Blueprint('cart_bp', __name__)
 order_bp = Blueprint('order_bp', __name__)
 
-user_bp.route('/create', methods=['POST'])(create_user)
+user_bp.route('/create', methods=['POST'])(create_user_handler)
 user_bp.route('/get-current-user', methods=['GET'])(jwt_middleware(get_current_user))
 
 auth_bp.route('/login', methods=['POST'])(login)

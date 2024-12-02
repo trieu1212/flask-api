@@ -140,7 +140,7 @@ def get_user_by_email(email):
 
 # handler
 
-def create_user():
+def create_user_handler():
     data = request.json
     firstName = data.get('firstName')
     lastName = data.get('lastName')
