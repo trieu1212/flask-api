@@ -166,11 +166,29 @@ def create_user_handler():
     }
 
     res = create_user(user_data)
-    return jsonify(res), 200
+
+    result = {
+        "id": res["_id"],
+        "firstName": res["firstName"],
+        "lastName": res["lastName"],
+        "email": res["email"],
+        "phone": res["phone"]
+    }
+
+    return jsonify(result), 200
 
 def get_current_user():
     id = request.args.get('id')
     user = get_user_by_id(id)
     if not user:
         return jsonify({'error': 'User not found'}), 400
-    return jsonify(user), 200
+    
+    result = {
+        "id": user["_id"],
+        "firstName": user["firstName"],
+        "lastName": user["lastName"],
+        "email": user["email"],
+        "phone": user["phone"]
+    }
+
+    return jsonify(result), 200

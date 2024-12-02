@@ -133,4 +133,11 @@ def get_current_user_cart():
     if not cart:
         return jsonify({'error': 'Cart not found'}), 400
     
-    return jsonify(cart), 200
+    result = {
+        "id": cart["_id"],
+        "user_id": cart["user_id"],
+        "products": cart["products"],
+        "total": cart["total"]
+    }
+
+    return jsonify(result), 200

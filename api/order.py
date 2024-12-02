@@ -74,4 +74,13 @@ def add_new_order_handler():
     res = add_new_order(user_id, products, total)
     if not res:
         return jsonify({'error': 'add new order failed'}), 400
-    return jsonify(res), 200
+    
+    result = {
+        'id': res['_id'],
+        'user_id': res['user_id'],
+        'products': res['products'],
+        'total': res['total'],
+        'date': res['date']
+    }
+
+    return jsonify(result), 200

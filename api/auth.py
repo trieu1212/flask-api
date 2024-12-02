@@ -24,9 +24,18 @@ def login():
         return jsonify({'error': 'Invalid password'}), 400
 
     token = gen_jwt_token(user)
+
+    user_data = {
+        'id': user['_id'],
+        'firstName': user['firstName'],
+        'lastName': user['lastName'],
+        'email': user['email'],
+        'phone': user['phone'],
+    }
+
     return jsonify({
         'status': 'success',
-        'user': user,
+        'user': user_data,
         'token': token
     }), 200
 
@@ -67,9 +76,18 @@ def verify_face():
 
         if avg_similarity >= THRESHOLD:
             user = get_user_by_id(user_id)
+
+            user_data = {
+                'id': user['_id'],
+                'firstName': user['firstName'],
+                'lastName': user['lastName'],
+                'email': user['email'],
+                'phone': user['phone'],
+            }
+
             return jsonify({
                 'verified': True,
-                'user': user,
+                'user': user_data,
                 'similarity': avg_similarity
             }), 200
         else:
