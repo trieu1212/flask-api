@@ -1,14 +1,10 @@
-import os
-import pickle
-import numpy as np
 from utils.jwt import gen_jwt_token
 from utils.hashPassword import check_password
 from flask import jsonify, request
 from api.config import Config
-from api.service import userService
+from api.user import get_user_by_email, get_user_by_id, update_label_user
 from model.utils import cosine_distance
-from api.service.embeddingService import save_embeddings, get_embeddings, get_all_embeddings
-EMBEDDINGS_PATH = Config.EMBEDDINGS_DIR
+from api.embedding import save_embeddings, get_embeddings, get_all_embeddings
 THRESHOLD = float(Config.THRESHOLD)
 
 def login():
@@ -20,7 +16,7 @@ def login():
     if not password:
         return jsonify({'error': 'No password provided'}), 400
 
-    user = userService.get_user_by_email(email)
+    user = get_user_by_email(email)
     if user is None:
         return jsonify({'error': 'User not found'}), 400
     
@@ -44,11 +40,11 @@ def register_face_v2():
 
         embeddings_values = list(embeddings.values())  
 
-        user = userService.get_user_by_id(user_id)
+        user = get_user_by_id(user_id)
         if user is None:
             return jsonify({'error': 'User not found'}), 400
         
-        userService.update_label_user(f"{user_id}_{user_email}", user_id)
+        update_label_user(f"{user_id}_{user_email}", user_id)
 
         save_embeddings(user_id, user_email, embeddings_values)
 
@@ -70,7 +66,7 @@ def verify_face():
         avg_similarity = (sum(similarities) / len(similarities)) if similarities else 0
 
         if avg_similarity >= THRESHOLD:
-            user = userService.get_user_by_id(user_id)
+            user = get_user_by_id(user_id)
             return jsonify({
                 'verified': True,
                 'user': user,

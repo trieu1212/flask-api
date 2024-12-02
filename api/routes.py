@@ -1,9 +1,9 @@
 from flask import Blueprint
-from api.handler.userHandler import create_user, get_current_user
-from api.handler.authHandler import login, register_face_v2, verify_face, get_ip
-from api.handler.productHandler import get_all_products_handler, get_product_by_id_handler, add_new_product
-from api.handler.cartHandler import add_product_to_cart_handler, get_current_user_cart
-from api.handler.orderHandler import add_new_order_handler
+from api.user import create_user, get_current_user
+from api.auth import login, register_face_v2, verify_face, get_ip
+from api.product import get_all_products_handler, get_product_by_id_handler, add_new_product
+from api.cart import add_product_to_cart_handler, get_current_user_cart
+from api.order import add_new_order_handler
 from api.middleware import jwt_middleware
 
 auth_bp = Blueprint('auth_bp', __name__)

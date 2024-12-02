@@ -1,6 +1,7 @@
 from bson.objectid import ObjectId
 from flask import current_app
 from api.config import Config
+from flask import jsonify, request
 
 class ProductEntity:
     def __init__(self, name, price, quantity, image, _id=None):
@@ -60,3 +61,63 @@ class ProductEntity:
             return True
         return False
     
+# service
+def create_product(product_data):
+    new_product = ProductEntity(
+        name=product_data["name"],
+        price=product_data["price"],
+        quantity=product_data["quantity"],
+        image=product_data["image"]
+    )
+    new_product.save()
+    return {
+        "id": str(new_product._id),
+        "name": new_product.name,
+        "price": new_product.price,
+        "quantity": new_product.quantity,
+        "image": new_product.image
+    }
+
+def get_product_by_id(id):
+    product = ProductEntity.find_by_id(id)
+    if product:
+        return product.to_dictionary()
+    return None
+
+def get_all_products():
+    return ProductEntity.get_all_products()
+
+def update_product_quantity(product_id, quantity):
+    return ProductEntity.update_quantity_product(product_id, quantity)
+
+def get_product_price(product_id):
+    product = ProductEntity.find_by_id(product_id)
+    if product:
+        return product.price
+    return None
+
+# handler
+def get_all_products_handler():
+    products = get_all_products()
+    if not products:
+        return jsonify({'error': 'No products found'}), 400
+    return jsonify(products), 200
+
+def get_product_by_id_handler():
+    id = request.args.get('id')
+    product = get_product_by_id(id)
+    if not product:
+        return jsonify({'error': 'Product not found'}), 400
+    return jsonify(product), 200
+
+def add_new_product():
+    product_data = request.json
+    name = product_data.get('name')
+    price = product_data.get('price')
+    quantity = product_data.get('quantity')
+    image = product_data.get('image')
+    if not name or not price or not quantity or not image:
+        return jsonify({'error': 'Missing required fields'}), 400
+    
+    new_product = create_product(product_data)
+    return jsonify(new_product), 200

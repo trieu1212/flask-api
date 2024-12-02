@@ -1,6 +1,6 @@
 import jwt
 from datetime import datetime, timedelta
-from api.entity.userEntity import UserEntity
+from api.user import UserEntity
 from api.config import Config
 
 SECRET_KEY = Config.SECRET_KEY
