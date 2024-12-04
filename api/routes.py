@@ -2,7 +2,7 @@ from flask import Blueprint
 from api.user import create_user_handler, get_current_user
 from api.auth import login, register_face_v2, verify_face, get_ip
 from api.product import get_all_products_handler, get_product_by_id_handler, add_new_product
-from api.cart import add_product_to_cart_handler, get_current_user_cart
+from api.cart import add_product_to_cart_handler, get_current_user_cart, remove_product_from_cart_handler
 from api.order import add_new_order_handler
 from api.middleware import jwt_middleware
 
@@ -26,5 +26,6 @@ product_bp.route('/create-product', methods=['POST'])(jwt_middleware(add_new_pro
 
 cart_bp.route('/add-product-to-cart', methods=['POST'])(jwt_middleware(add_product_to_cart_handler))
 cart_bp.route('/get-cart', methods=['GET'])(jwt_middleware(get_current_user_cart))
+cart_bp.route('/remove-product-from-cart', methods=['POST'])(jwt_middleware(remove_product_from_cart_handler))
 
 order_bp.route('/add-new-order', methods=['POST'])(jwt_middleware(add_new_order_handler))

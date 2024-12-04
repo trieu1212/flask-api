@@ -90,6 +90,36 @@ class CartEntity:
         carts_collection.delete_one({"_id": ObjectId(_id)})
         return True
     
+    @staticmethod
+    def remove_product_from_cart(user_id, product_id, price ,quantity=None):
+        db = current_app.config['MONGO_URI'][Config.MONGO_DB_NAME]
+        carts_collection = db["carts"]
+        cart = carts_collection.find_one({"user_id": user_id})
+
+        if cart:
+            products = cart["products"]
+            for item in products:
+                if item["product_id"] == product_id:
+                    if quantity is None:  
+                        products.remove(item)
+                        cart["total"] -= item["quantity"] * price
+                    else:
+                        item["quantity"] -= quantity
+                        cart["total"] -= quantity * price
+                        if item["quantity"] <= 0:  
+                            products.remove(item)
+
+                    carts_collection.update_one(
+                        {"user_id": user_id},
+                        {"$set": {"products": products, "total": max(0, cart["total"])}}
+                    )
+
+                    if not products:  
+                        carts_collection.delete_one({"user_id": user_id})
+
+                    return True
+        return False
+    
 # service
 def add_product_to_cart(user_id, product_id, quantity):
     product = ProductEntity.find_by_id(product_id)
@@ -103,6 +133,15 @@ def get_user_cart(user_id):
     if cart:
         return cart.to_dictionary()
     return None
+
+def remove_product_from_cart(user_id, product_id, quantity):
+    product = ProductEntity.find_by_id(product_id)
+    if not product:
+        return False
+
+    price = product.price
+    success = CartEntity.remove_product_from_cart(user_id, product_id, price, quantity)
+    return success
 
 # handler
 def add_product_to_cart_handler():
@@ -141,3 +180,18 @@ def get_current_user_cart():
     }
 
     return jsonify(result), 200
+
+def remove_product_from_cart_handler():
+    data = request.json
+    user_id = data.get('user_id')
+    product_id = data.get('product_id')
+    quantity = data.get('quantity')
+
+    if not user_id or not product_id:
+        return jsonify({'error': 'Missing required fields'}), 400
+
+    success = remove_product_from_cart(user_id, product_id, quantity)
+    if not success:
+        return jsonify({'error': 'Failed to remove product from cart'}), 400
+
+    return jsonify({'success': 'Product removed or quantity reduced in cart'}), 200
