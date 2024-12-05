@@ -104,3 +104,19 @@ def get_ip():
     client_ip = request.remote_addr
     print(f"Client IP: {client_ip}")
     return f"Your IP is: {client_ip}"
+
+def validate_password():
+    data = request.json
+    password = data.get('password')
+    payload = request.jwt_payload
+    user_id = payload.get('user_id')
+
+    if not password:
+        return jsonify({'error': 'No password provided'}), 400
+
+    user = get_user_by_id(user_id)
+    user_pass = user.get('password')
+    if not check_password(password, user_pass.encode('utf-8')):
+        return jsonify({'error': 'Invalid password'}), 400
+    
+    return jsonify({'message': 'Password OK'}), 200

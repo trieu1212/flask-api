@@ -1,6 +1,6 @@
 from flask import Blueprint
 from api.user import create_user_handler, get_current_user
-from api.auth import login, register_face_v2, verify_face, get_ip
+from api.auth import login, register_face_v2, verify_face, get_ip, validate_password
 from api.product import get_all_products_handler, get_product_by_id_handler, add_new_product
 from api.cart import add_product_to_cart_handler, get_current_user_cart, remove_product_from_cart_handler
 from api.order import add_new_order_handler
@@ -19,6 +19,7 @@ auth_bp.route('/login', methods=['POST'])(login)
 auth_bp.route('/verify-face', methods=['POST'])(jwt_middleware(verify_face))
 auth_bp.route('/register-face-v2', methods=['POST'])(jwt_middleware(register_face_v2))
 auth_bp.route('/get-ip', methods=['GET'])(get_ip)
+auth_bp.route('/validate-password', methods=['POST'])(jwt_middleware(validate_password))
 
 product_bp.route('/get-all-products', methods=['GET'])(jwt_middleware(get_all_products_handler))
 product_bp.route('/get-product-by-id', methods=['GET'])(jwt_middleware(get_product_by_id_handler))
