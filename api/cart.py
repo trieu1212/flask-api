@@ -160,10 +160,21 @@ def add_product_to_cart_handler():
     if not res:
         return jsonify({'error': 'add to cart failed'}), 400
     
+    product_list = []
+
+    for product in res["products"]:
+        product_data = ProductEntity.find_by_id(product["product_id"])
+        product["id"] = product["product_id"]
+        product["name"] = product_data.name
+        product["price"] = product_data.price
+        product["image"] = product_data.image
+        product["quantity"] = product.quantity
+        product_list.append(product)
+
     result = {
         "id": res["_id"],
         "user_id": res["user_id"],
-        "products": res["products"],
+        "products": product_list,
         "total": res["total"]
     }
 
@@ -178,10 +189,21 @@ def get_current_user_cart():
     if not cart:
         return jsonify({'error': 'Cart not found'}), 400
     
+    product_list = []
+
+    for product in cart["products"]:
+        product_data = ProductEntity.find_by_id(product["product_id"])
+        product["id"] = product["product_id"]
+        product["name"] = product_data.name
+        product["price"] = product_data.price
+        product["image"] = product_data.image
+        product["quantity"] = product.quantity
+        product_list.append(product)
+
     result = {
         "id": cart["_id"],
         "user_id": cart["user_id"],
-        "products": cart["products"],
+        "products": product_list,
         "total": cart["total"]
     }
 
