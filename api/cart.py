@@ -168,7 +168,7 @@ def add_product_to_cart_handler():
         product["name"] = product_data.name
         product["price"] = product_data.price
         product["image"] = product_data.image
-        product["quantity"] = product.quantity
+        product["quantity"] = product["quantity"]
         product_list.append(product)
 
     result = {
@@ -197,7 +197,7 @@ def get_current_user_cart():
         product["name"] = product_data.name
         product["price"] = product_data.price
         product["image"] = product_data.image
-        product["quantity"] = product.quantity
+        product["quantity"] = product["quantity"]
         product_list.append(product)
 
     result = {
