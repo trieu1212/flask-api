@@ -160,13 +160,19 @@ def add_product_to_cart_handler():
     if not res:
         return jsonify({'error': 'add to cart failed'}), 400
     
-    return jsonify(res), 200
+    result = {
+        "id": res["_id"],
+        "user_id": res["user_id"],
+        "products": res["products"],
+        "total": res["total"]
+    }
+
+    return jsonify(result), 200
 
 def get_current_user_cart():
-    data = request.json
-    user_id = data.get('user_id')
+    user_id = request.args.get('user_id')
     if not user_id:
-        return jsonify({'error': 'Missing required fields'}), 400
+        return jsonify({'error': 'Error query'}), 400
     
     cart = get_user_cart(user_id)
     if not cart:
