@@ -168,7 +168,7 @@ def create_user_handler():
     res = create_user(user_data)
 
     result = {
-        "id": res["_id"],
+        "id": res["id"],
         "firstName": res["firstName"],
         "lastName": res["lastName"],
         "email": res["email"],
