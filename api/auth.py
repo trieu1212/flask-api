@@ -31,6 +31,7 @@ def login():
         'lastName': user['lastName'],
         'email': user['email'],
         'phone': user['phone'],
+        'label': user['label']
     }
 
     return jsonify({
