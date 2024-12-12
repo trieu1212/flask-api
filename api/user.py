@@ -188,7 +188,8 @@ def get_current_user():
         "firstName": user["firstName"],
         "lastName": user["lastName"],
         "email": user["email"],
-        "phone": user["phone"]
+        "phone": user["phone"],
+        "label": user["label"]
     }
 
     return jsonify(result), 200
